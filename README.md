@@ -8,3 +8,5 @@ Run the following code first to initialize the database and start the PostgreSQL
 ```sh
 $ sudo service postgresql start
 ```
+
+The demo website: http://allplayapp.herokuapp.com
