@@ -1,0 +1,92 @@
+<div class="spot-page">
+  <div class="row align-left medium-unstack">
+    <div class="small-11 medium-6 large-4 columns">
+      <h1><%= @spot.title %></h1>
+      <%= link_to spots_path, class: 'button' do %>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        Back
+      <% end %>
+  <% if current_user.id == @spot.user.id %>
+      <%= link_to edit_spot_path(@spot), class: 'button' do %>
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+        Edit
+      <% end %>
+    <% end %>
+
+      <dl class="dl-horizontal">
+  
+		
+		    <dt>Host:</dt>
+        <dd><%= @spot.user.username %></dd>
+		
+		
+        <dt>Address:</dt>
+        <dd><%= @spot.address %></dd>
+
+        <dt>Time limit:</dt>
+        <dd><%= @spot.time_limit %></dd>
+
+        <dt>Created:</dt>
+        <dd><%= @spot.created_at %></dd>
+      </dl>
+      
+    
+      
+      <table class="pure-table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				
+				<% @spot.users_joined.each do |user| %>
+				<tr>
+					<td><%= user.username %></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      <div class="spot-comments align-left">
+        <h4>Comments</h4>
+          <div id="comments">
+            <%= render :partial => @spot.comments %>
+          </div>
+            <%= form_for [@spot, Comment.new] do |f| %>
+              <div class="col-sm-10">
+              <%= f.text_field :body, class: "form-control" %>
+            </div>
+              <p><%= f.submit "Add Comment", class: "button" %></p>
+            <% end %>
+      </div>
+    </div>
+
+      <div class="flex-video columns">
+        <div id="map" style='max-width: 900px; height: 700px;'></div>
+
+        <script type="text/javascript">
+          handler = Gmaps.build('Google');
+          handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+            markers = handler.addMarkers(<%=raw @hash.to_json %>);
+            handler.bounds.extendWith(markers);
+            handler.fitMapToBounds();
+          });
+        </script>
+      </div>
+    </div>
+</div>

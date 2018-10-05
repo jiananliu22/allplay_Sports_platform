@@ -1,0 +1,11 @@
+<%# Rails flash messages styled for Foundation 6%>
+<% flash.each do |name, msg| %>
+  <% if msg.is_a?(String) %>
+    <div class="callout small-<%= name.to_s == 'notice' ? 'success' : 'danger' %>">
+      <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= content_tag :div, msg, :id => "flash_#{name}" %>
+    </div>
+  <% end %>
+<% end %>

@@ -1,0 +1,131 @@
+    <% if user_signed_in? == false %>
+      <div id="messageBar">
+      <p>Allplay is a fantastic tool! Add 'Sports' and comments to the global map below! <br><%= link_to 'Sign Up', new_user_session_path %> to join us.</p>
+      </div>
+    <% end %>
+
+
+<div class="row align-left medium-unstack">
+   <div class="columns flex-video">
+      <div id="map" style='max-width: 740px; height: 740px;'></div>
+
+    <script type="text/javascript" defer>
+      $(function() {
+        console.log("hi");
+        handler = Gmaps.build('Google');
+        handler.buildMap({ provider: { }, internal: {id: 'map'}}, function(){
+        markers = handler.addMarkers(<%=raw @hash.to_json %>);
+                      markers = handler.addMarkers([
+                        {
+                        "lat": 30.60,
+                        "lng": -96.33,
+                        "picture": {
+                          "url": "",
+                          "width":  254,
+                          "height": 96
+                        },
+                        "infowindow": "Welcome to As you know..."
+                      }
+                    ]);
+          handler.bounds.extendWith(markers);
+          handler.fitMapToBounds();
+          handler.map.serviceObject.setZoom(13);
+        });
+
+        $(".spots-content").on("click", "tr", function() {
+        var latitude = $(this).children(".lat").attr("class").split(' ')[0];
+        var longitude = $(this).children(".long").attr("class").split(' ')[0];
+        console.log($(this).children(".lat").attr("class").split(' ')[0]);
+        var laLatLng = new google.maps.LatLng(latitude, longitude);
+        handler.map.serviceObject.panTo(laLatLng);
+        handler.map.serviceObject.setZoom(18);
+        });
+      });
+    </script>
+    </div>
+    
+  <div class ="small-12 medium-6 large-6 column">
+    <% provide(:title, 'sports | AllPlay') %>
+
+    <div class="page-header text-center">
+      <h1>Sports @ AllPlay</h1>
+      
+    </div>
+    <%= form_tag(city_path, :method => "get", id: "search-form") do %>
+      <%= text_field_tag :search, params[:search], placeholder: "Search Sports" %>
+      <div class="page-header text-center">
+      <%= submit_tag "Search", class:'button' %>
+      <%= link_to "Back", city_path, class: 'button alert' %>
+    <% end %>
+      </div>
+      
+    <% if @spots.present? %>
+      <% @spots %>
+    <% else %>
+      <p>There are no posts containing the term(s) <%= params[:search] %>.</p>
+    <% end %>
+
+    <div class="table spots-content">
+      <table class="hover">
+        <thead>
+          <tr>
+                <th></th>
+                <th>Sports</th>
+                <th>Address</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>People Playing</th>
+                <th>People Needed</th>
+                <th>Action/status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <%= content_tag_for(:tr, @spots) do |spot| %>
+                <td><i class="fa fa-map-pin" aria-hidden="true"></i></td>
+                <td><%= link_to spot.title, spot %></td>
+                <td><%= spot.address %></td>
+                <td><%= spot.time_limit %></td>
+                <td><%= spot.time_limit %></td>
+                <td class="<%= spot.latitude %> lat"></td>
+                <td class="<%= spot.longitude %> long"></td>
+                
+                
+                <td>
+                  <% if spot.user.id == current_user.id %>
+                     <form class="w3-show-inline-block" action="/spots/<%= spot.id %>" method="post">
+                        <input type="hidden" name="_method" value="delete">
+                        <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+                        <input class="w3-btn w3-text-light-grey w3-blue-grey w3-hover-sand" type="submit" value="Delete">
+                     </form>
+                     <a class="w3-btn w3-text-light-grey w3-blue-grey w3-hover-sand" href="/events/<%= spot.id %>/edit">Edit</a>
+                  <% end %>
+                  <% if spot.user.id != current_user.id %>  
+                     <% if spot.users_joined.any? {|e| current_user.id == e.id } %>
+                        <form action="/memberships/<%= spot.id %>" method="post">
+                          
+                           <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+                           <input type="hidden" name="_method" value="delete">
+                           <input type="hidden" name="spot_id" value="<%= spot.id %>">
+                           <input class="w3-btn w3-text-light-grey w3-blue-grey w3-hover-sand" type="submit" value="Cancel">
+                        </form>
+                     <% else %>
+                        <form action="memberships" method="post">
+                           <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+                           <input type="hidden" name="spot_id" value="<%= spot.id %>">
+                           <input class="w3-btn w3-text-light-grey w3-blue-grey w3-hover-sand" type="submit" value="Join">
+                        </form>
+                     <% end %>
+                  <% end %>
+                  </td>
+                
+                
+                
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+ 
+  </div>

@@ -1,0 +1,199 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+
+ *= require_tree .
+ *= require_self
+ *= require foundation
+ *= require foundation_and_overrides
+
+ */
+
+@import "foundation_and_overrides";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+@import 'https://fonts.googleapis.com/css?family=Raleway:400,800';
+
+// COLOR PALATTE
+
+$gh-blue: #0938F7;
+$gh-darkblue: #12355B;
+$gh-yellow: #80C7F6;
+//$gh-yellow: #FFE74C;
+$gh-red: #E15554;
+$gh-grey: #CEE5F2;
+$gh-font: 'Raleway', sans-serif;
+
+
+
+// GENERAL STYLING
+
+h1, h2 {
+  font-family: $gh-font;
+  font-weight: bold;
+}
+
+.page-header {
+  padding: 1em;
+  margin-left: 1em;
+}
+
+.spots {
+  th, td {
+    text-align:center;
+  }
+}
+
+.signup {
+
+}
+
+body {
+  font-family: $gh-font;
+}
+
+// NAV BAR STYLING
+
+#example-menu, .title-bar {
+  background-color: $gh-yellow;
+  color: black;
+  $top-menu-link-color: black;
+  $top-menu-icon-color: black;
+  $top-menu-link-color-toggled: black;
+  $top-menu-icon-color-toggled: black;
+}
+
+#example-menu ul {
+  background-color: $gh-yellow;
+}
+
+#example-menu a {
+  color: black;
+}
+
+#example-menu a:hover {
+  font-weight: bold;
+  color: white;
+}
+
+
+// SPOTS
+
+.spots-content {
+  height: 32.5em;
+  overflow: auto;
+}
+
+.myspots-content {
+  height: 35.5em;
+  overflow: auto;
+}
+
+.delete-button {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.delete-button:hover {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.myspots-content i {
+  color: red;
+}
+
+.edit-spot, .spot-page {
+  .button {
+    margin-top: 1em;
+  }
+}
+
+#comments {
+  height: 12em;
+  overflow: auto;
+}
+
+// ERROR MESSAGE CALLOUTS
+
+.callout {
+  font-size: 12px;
+}
+
+
+// USED TO FIX MOBILE NAV BAR VISIBILITY UPON INITIAL LOADING
+.no-js {
+  @include breakpoint(small only) {
+    .top-bar {
+      display: none;
+    }
+  }
+
+  @include breakpoint(medium) {
+    .title-bar {
+      display: none;
+    }
+  }
+}
+
+// ABOUT PAGE
+
+.about {
+  text-align: center;
+}
+// .aboutHeader{
+//   text-align: center;
+//   margin-top: 1em;
+// }
+
+h4 {
+  font-family: $gh-font;
+  font-weight: bold;
+}
+#developersSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  text-align: center;
+}
+
+#technologiesSection {
+  list-style: none;
+}
+
+.developers {
+  margin: 0 1em;
+}
+
+.technologies {
+  margin: 0 1em;
+}
+
+#bigPin {
+  color: $gh-yellow;
+  padding: .5em;
+}
+
+// CITY PAGE
+
+#messageBar {
+  background-color: $gh-blue;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+#messageBar a {
+  color: $gh-yellow;
+}
+
+#messageBar a:hover {
+  color: white;
+}

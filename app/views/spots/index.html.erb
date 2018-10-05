@@ -1,0 +1,71 @@
+<div class ="my-spots">
+    <div class="row align-left medium-unstack">
+      <div class="columns flex-video">
+          <div id="map" style='max-width: 900px; height: 700px;'></div>
+
+          <script type="text/javascript">
+            handler = Gmaps.build('Google');
+            handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+              markers = handler.addMarkers(<%=raw @hash.to_json %>);
+              handler.bounds.extendWith(markers);
+              handler.fitMapToBounds();
+                    if (markers.length == 0) {
+                      markers = handler.addMarkers([
+                        {
+                        "lat": 30.59,
+                        "lng": -96.32,
+                        "picture": {
+                          "url": "http://ss.bdimg.com/static/superman/img/logo/logo_white_fe6da1ec.png",
+                          "width":  254,
+                          "height": 96
+                        },
+                        "infowindow": "Welcome to FreeSpot! As you know..."
+                      }
+                    ]);
+                    handler.bounds.extendWith(markers);
+                    handler.fitMapToBounds();
+                    handler.map.serviceObject.setZoom(12);
+              }
+              $(".myspots-content").on("click", "tr", function() {
+                var latitude = $(this).children(".lat").attr("class").split(' ')[0];
+                var longitude = $(this).children(".long").attr("class").split(' ')[0];
+                console.log($(this).children(".lat").attr("class").split(' ')[0]);
+                var laLatLng = new google.maps.LatLng(latitude, longitude);
+                handler.map.serviceObject.panTo(laLatLng);
+                handler.map.serviceObject.setZoom(18);
+                });
+
+            });
+          </script>
+        </div>
+        <div class="small-12 medium-6 large-6 columns">
+          <div class="page-header text-center">
+          <h1>Your Sports</h1>
+          </div>
+          <%= link_to new_spot_path, class: 'expanded button' do %>
+            <font size="5" color="white"><b>Create </b></font><i class="fa fa-bullhorn fa-2x" aria-hidden="true"></i>
+            
+          <% end %>
+          <div class="myspots-content">
+            <table class="hover">
+              <tbody>
+                <%= content_tag_for(:tr, @spots) do |spot| %>
+                      <td><%= link_to spot.title, spot %></td>
+                      <td><%= spot.address %></td>
+                      <td><%= spot.time_limit %></td>
+                      <!-- <td><%= spot.description %></td> -->
+                      <td class="<%= spot.latitude %> lat"></td>
+                      <td class="<%= spot.longitude %> long"></td>
+                  <td><%= link_to spot, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button delete-button' do %>
+                    <i class="fa fa-times-circle fa-2x" aria-hidden="true"></i>
+                    <% end %></td>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+
+        
+      </div>
+</div>

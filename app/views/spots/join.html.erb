@@ -1,0 +1,30 @@
+<div class="table spots-content">
+      <table class="hover">
+        <thead>
+          <tr>
+                <th></th>
+                <th>Sports</th>
+                <th>Address</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>People Playing</th>
+                <th>People Needed</th>
+                <th>Join</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <%= content_tag_for(:tr, @spots) do |spot| %>
+                <td><i class="fa fa-map-pin" aria-hidden="true"></i></td>
+                <td><%= link_to spot.title, spot %></td>
+                <td><%= spot.address %></td>
+                <td><%= spot.time_limit %></td>
+                <td><%= spot.time_limit %></td>
+                <td class="<%= spot.latitude %> lat"></td>
+                <td class="<%= spot.longitude %> long"></td>
+                <td><%= link_to "Join", {:controller=>"spot", :action=>"join", :spot => spot.id} %></td>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
